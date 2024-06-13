@@ -5,7 +5,6 @@ import 'package:mybasket/firebase_options.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mybasket/screens/home_page.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -18,18 +17,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      home: MultiBlocProvider(
-        providers: [
-          
-          BlocProvider(
-            create: (context) => ComboBloc()
-              ..add(GetCombos(combos: const [])) ),
-         
-        ],
-        child: const HomePage(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+            create: (context) => ComboBloc()..add(GetCombos(combos: const []))),
+      ],
+      child: const MaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        home: HomePage(),
       ),
     );
   }

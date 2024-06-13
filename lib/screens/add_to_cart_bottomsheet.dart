@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mybasket/bloc/comboBloc/combo_bloc.dart';
 import 'package:mybasket/config/colors.dart';
 import 'package:mybasket/models/combo_model.dart';
 import 'package:mybasket/widgets/snackbar.dart';
@@ -57,8 +59,7 @@ class _AddToCartBottomSheetState extends State<AddToCartBottomSheet> {
                     children: [
                       Text(
                         widget.combo.name,
-                        style:
-                            const TextStyle(fontSize: 15, color: darkColor),
+                        style: const TextStyle(fontSize: 15, color: darkColor),
                       ),
                       const SizedBox(
                         height: 5,
@@ -159,39 +160,45 @@ class _AddToCartBottomSheetState extends State<AddToCartBottomSheet> {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    child: InkWell(
-                      onTap: () {
-                        // ComboDataModel combo = ComboDataModel(
-                        //     comboId: widget.combo.comboId,
-                        //     imageUrl: widget.combo.imageUrl,
-                        //     name: widget.combo.name,
-                        //     price: widget.combo.price,
-                        //     description: widget.combo.description,
-                        //     tag: widget.combo.tag,
-                        //     favourite: widget.combo.favourite,
-                        //     quantity: quantity);
-        
-                        
-                        Navigator.pop(context);
-                        showSnackBar(
-                            context, "Added To Cart!!", primaryColor, true);
-                      },
-                      child: Container(
-                        height: 50,
-                        width: 140,
-                        decoration: BoxDecoration(
-                          color: primaryColor,
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            "Add To Cart",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18),
+                  BlocListener<ComboBloc, ComboState>(
+                    listener: (context, state) {},
+                    child: SizedBox(
+                      child: InkWell(
+                        onTap: () {
+                          ComboDataModel combo = ComboDataModel(
+                              comboId: widget.combo.comboId,
+                              imageUrl: widget.combo.imageUrl,
+                              name: widget.combo.name,
+                              price: widget.combo.price,
+                              description: widget.combo.description,
+                              tag: widget.combo.tag,
+                              favourite: widget.combo.favourite,
+                              quantity: quantity);
+
+                          context
+                              .read<ComboBloc>()
+                              .add(UpdateCombo(combo: combo));
+
+                          Navigator.pop(context);
+                          showSnackBar(
+                              context, "Added To Cart!!", primaryColor, true);
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 140,
+                          decoration: BoxDecoration(
+                            color: primaryColor,
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              "Add To Cart",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 18),
+                            ),
                           ),
                         ),
                       ),
